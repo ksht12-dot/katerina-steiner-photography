@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la ~/.claude/skills/ 2>/dev/null || echo \"NO_SKILLS_DIR\")",
+      "Bash(mkdir -p ~/.claude/skills && echo OK)",
+      "Bash(gh auth *)",
+      "Bash(curl -s \"https://api.github.com/repos/anthropics/skills/contents/skills/frontend-design\")",
+      "Bash(mkdir -p ~/.claude/skills/frontend-design)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/anthropics/skills/main/skills/frontend-design/SKILL.md\" -o ~/.claude/skills/frontend-design/SKILL.md)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/anthropics/skills/main/skills/frontend-design/LICENSE.txt\" -o ~/.claude/skills/frontend-design/LICENSE.txt)",
+      "Bash(python3)",
+      "Bash(mkdir -p images css js)",
+      "Bash(cp \"hero_crop2.png\" images/hero-swaddle.png)",
+      "Bash(cp \"/private/tmp/claude-501/-Users-ekaterinauporova-Downloads-ok-site-newborn/b80deab7-21b2-4fcc-8f5c-05e3ab4518bd/scratchpad/hero_crop2.png\" images/hero-swaddle.png)",
+      "Bash(cp \"/private/tmp/claude-501/-Users-ekaterinauporova-Downloads-ok-site-newborn/b80deab7-21b2-4fcc-8f5c-05e3ab4518bd/scratchpad/birthcenter_crop.png\" images/birth-center-moment.png)",
+      "Bash(cp \"newborn_collage_burgundy.png\" images/spread-burgundy.png)",
+      "Bash(python3 -m http.server 4173 --directory \"/Users/ekaterinauporova/Downloads/ok site newborn\")",
+      "Bash(curl -sI http://localhost:4173/index.html)"
+    ]
+  }
+}
