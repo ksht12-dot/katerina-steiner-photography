@@ -1,0 +1,10 @@
+# Local-only fulfillment tools — never published to the live site.
+admin/
+
+# Stripe docs skills installed via `npx skills add https://docs.stripe.com`
+.agents/
+.claude/skills/
+skills-lock.json
+
+.DS_Store
+.claude/scheduled_tasks.lock

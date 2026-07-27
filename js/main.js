@@ -61,27 +61,90 @@
     fillObserver.observe(timelineFill);
   }
 
-  // Contact form -> mailto fallback (no backend configured)
+  // Gift certificates
+  //
+  // Each "Buy" button links straight to that collection's Stripe Payment Link.
+  // The $15 printed certificate is an optional item on the Stripe link itself,
+  // so the giver pays it at checkout and the printed certificate still shows
+  // the full collection value.
+  //
+  // Any href still containing "REPLACE" is treated as not-yet-configured: the
+  // button greys out and won't navigate, so an unfinished link can never send
+  // a buyer to a dead Stripe page.
+  document.querySelectorAll('.gift-buy').forEach((btn) => {
+    const url = btn.getAttribute('href') || '';
+    if (!url.includes('REPLACE')) return;
+
+    btn.classList.add('is-unconfigured');
+    btn.setAttribute('aria-disabled', 'true');
+    btn.textContent = 'Coming soon';
+    btn.href = '#gifts';
+    btn.addEventListener('click', (e) => e.preventDefault());
+  });
+
+  // Contact form
+  //
+  // Posts to the form service set in data-endpoint on the <form> (Formspree or
+  // similar), which forwards inquiries to your inbox without your address ever
+  // appearing on the site. While the endpoint is unset, the form falls back to
+  // opening a pre-filled text message to (619) 634-1062 so it still works.
+  const PHONE = '+16196341062';
+  const PHONE_DISPLAY = '(619) 634-1062';
+
   if (form) {
-    form.addEventListener('submit', (e) => {
+    const note = document.getElementById('form-note');
+    const submit = document.getElementById('form-submit');
+    const endpoint = form.dataset.endpoint || '';
+    const isConfigured = endpoint && !endpoint.includes('REPLACE');
+
+    const say = (text, isError) => {
+      if (!note) return;
+      note.textContent = text;
+      note.classList.toggle('form-note-error', Boolean(isError));
+    };
+
+    const summarise = (data) =>
+      `Newborn session inquiry — ${data.get('name') || ''}\n` +
+      `Email: ${data.get('email') || ''}\n` +
+      `Due date / birth date: ${data.get('date') || ''}\n` +
+      `Where: ${data.get('location') || ''}\n` +
+      `${data.get('message') || ''}`;
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
-      const name = data.get('name') || '';
-      const email = data.get('email') || '';
-      const date = data.get('date') || '';
-      const location = data.get('location') || '';
-      const message = data.get('message') || '';
 
-      const subject = `Newborn session inquiry — ${name}`;
-      const body =
-        `Name: ${name}\n` +
-        `Email: ${email}\n` +
-        `Due date / birth date: ${date}\n` +
-        `Preferred location: ${location}\n\n` +
-        `Message:\n${message}`;
+      if (!isConfigured) {
+        // No form service yet — hand off to the Messages app instead.
+        say(`Opening a text to ${PHONE_DISPLAY} with your details…`);
+        window.location.href = `sms:${PHONE}?&body=${encodeURIComponent(summarise(data))}`;
+        return;
+      }
 
-      const mailto = `mailto:katephotomn@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+
+        form.reset();
+        say("Thank you — your inquiry is on its way. I'll reply within a day.");
+        if (submit) submit.textContent = 'Sent';
+        return;
+      } catch (err) {
+        say(`That didn't go through. Please text me at ${PHONE_DISPLAY} and I'll get right back to you.`, true);
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = 'Try again';
+        }
+      }
     });
   }
 })();
