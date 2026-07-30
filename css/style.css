@@ -520,6 +520,23 @@ p { margin: 0 0 1em; }
   font-size: 0.9rem;
   color: var(--ink-soft);
 }
+.tier-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+.tier-btn {
+  padding: 0.55rem 0.95rem;
+  font-size: 0.8rem;
+}
+.tier-btn.is-unconfigured {
+  background: rgba(42,33,26,0.28);
+  border-color: transparent;
+  color: var(--card);
+  cursor: not-allowed;
+}
+.tier-btn.is-unconfigured:hover { transform: none; background: rgba(42,33,26,0.28); }
 
 .services-note {
   max-width: 640px;
