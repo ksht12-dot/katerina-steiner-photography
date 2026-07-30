@@ -81,7 +81,10 @@
   var heading = document.getElementById('thanks-heading');
   var copy = document.getElementById('thanks-copy');
 
-  if (item === 'retainer') {
+  if (item === 'balance') {
+    heading.textContent = 'Payment received — thank you!';
+    copy.textContent = "You're all set. I'll confirm everything by text shortly — and if this was your remaining balance, there's nothing more to do before your session.";
+  } else if (item === 'retainer') {
     heading.textContent = 'Your date is held.';
     copy.textContent = "Thank you — your $100 retainer is in, and it counts toward your package. When baby arrives, text me at (619) 634-1062 and I'll confirm your session day within 24 hours. The remaining balance is due the day before your session.";
   } else if (item === 'fresh48' || item === 'standard' || item === 'premium') {
