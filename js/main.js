@@ -137,6 +137,8 @@
         form.reset();
         say("Thank you — your inquiry is on its way. I'll reply within a day.");
         if (submit) submit.textContent = 'Sent';
+        // Meta Pixel: a delivered inquiry is the ad campaign's Lead event.
+        if (typeof fbq === 'function') fbq('track', 'Lead');
         return;
       } catch (err) {
         say(`That didn't go through. Please text me at ${PHONE_DISPLAY} and I'll get right back to you.`, true);

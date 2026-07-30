@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank you — Katerina Steiner Photography</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440;1,9..144,500&family=Nunito+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .thanks {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(2rem, 6vw, 4rem) 0;
+  }
+  .thanks-inner { max-width: 38rem; }
+  .thanks .wordmark { display: inline-flex; margin-bottom: clamp(2rem, 5vw, 3rem); }
+  .thanks h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 440; }
+  .thanks p { color: var(--ink-soft); font-size: 1.05rem; }
+  .thanks .btn { margin-top: 1.5rem; }
+  .thanks-contact { margin-top: 2rem; font-size: 0.9rem; }
+  .thanks-contact a { color: var(--berry); font-weight: 600; }
+</style>
+<!-- Meta Pixel — skipped on localhost so previews never send events -->
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var item = params.get('item') || '';
+  var value = Number(params.get('v')) || 0;
+  var isLocal = /^(localhost|127\.)/.test(location.hostname);
+
+  // Reloading this page must not report a second sale, so remember that
+  // this exact purchase already fired for this browser session.
+  var dedupKey = 'purchase_fired:' + location.search;
+  var alreadyFired = false;
+  try { alreadyFired = sessionStorage.getItem(dedupKey) === '1'; } catch (e) {}
+
+  var firePurchase = value > 0 && !alreadyFired;
+
+  // Exposed for local testing only; harmless in production.
+  window.__pixelPlan = { item: item, value: value, wouldFire: !isLocal && firePurchase };
+
+  if (!isLocal) {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1720351159159605');
+    fbq('track', 'PageView');
+    if (firePurchase) {
+      fbq('track', 'Purchase', { value: value, currency: 'USD', content_name: item || 'payment' });
+      try { sessionStorage.setItem(dedupKey, '1'); } catch (e) {}
+    }
+  }
+})();
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+  src="https://www.facebook.com/tr?id=1720351159159605&ev=PageView&noscript=1"></noscript>
+</head>
+<body>
+
+<main class="thanks">
+  <div class="wrap thanks-inner">
+    <a href="/" class="wordmark">Katerina Steiner<span>Photography</span></a>
+    <h1 id="thanks-heading">Payment received — thank you!</h1>
+    <p id="thanks-copy">You'll hear from me shortly with everything you need.</p>
+    <a href="/" class="btn btn-primary">Back to the site</a>
+    <p class="thanks-contact">Questions in the meantime? Text me at <a href="tel:+16196341062">(619) 634-1062</a>.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var item = new URLSearchParams(location.search).get('item') || '';
+  var heading = document.getElementById('thanks-heading');
+  var copy = document.getElementById('thanks-copy');
+
+  if (item === 'retainer') {
+    heading.textContent = 'Your date is held.';
+    copy.textContent = "Thank you — your $100 retainer is in, and it counts toward your package. When baby arrives, text me at (619) 634-1062 and I'll confirm your session day within 24 hours. The remaining balance is due the day before your session.";
+  } else if (item === 'fresh48' || item === 'standard' || item === 'premium') {
+    heading.textContent = 'Thank you for your gift.';
+    copy.textContent = "Your gift certificate is on its way — I'll email it within 24 hours, ready to print or forward. If you added the printed certificate, it goes in the mail within 2 business days.";
+  }
+})();
+</script>
+
+</body>
+</html>
