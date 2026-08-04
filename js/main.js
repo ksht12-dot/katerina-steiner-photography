@@ -87,9 +87,9 @@
   // Posts to the form service set in data-endpoint on the <form> (Formspree or
   // similar), which forwards inquiries to your inbox without your address ever
   // appearing on the site. While the endpoint is unset, the form falls back to
-  // opening a pre-filled text message to (619) 634-1062 so it still works.
-  const PHONE = '+16196341062';
-  const PHONE_DISPLAY = '(619) 634-1062';
+  // opening a pre-filled text message to (612) 440-5720 so it still works.
+  const PHONE = '+16124405720';
+  const PHONE_DISPLAY = '(612) 440-5720';
 
   if (form) {
     const note = document.getElementById('form-note');
