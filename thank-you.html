@@ -86,8 +86,40 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 }
 </script>
 <!-- End TikTok Pixel -->
+<!-- Purchase details for Google Tag Manager. Pushed before the container
+     loads so page-load triggers can read them. Mirrors the Meta/TikTok
+     guards: nothing is pushed for variable-amount payments or reloads. -->
+<script>
+(function () {
+  var plan = window.__pixelPlan || {};
+  window.dataLayer = window.dataLayer || [];
+  if (plan.wouldFire) {
+    window.dataLayer.push({
+      event: 'purchase',
+      transaction_type: plan.item || 'payment',
+      value: plan.value,
+      currency: 'USD'
+    });
+  }
+})();
+</script>
+<!-- Google Tag Manager — skipped on localhost so previews never send events -->
+<script>
+if (!/^(localhost|127\.)/.test(location.hostname)) {
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WM96KFRZ');
+}
+</script>
+<!-- End Google Tag Manager -->
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WM96KFRZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <main class="thanks">
   <div class="wrap thanks-inner">

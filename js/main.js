@@ -137,8 +137,20 @@
         form.reset();
         say("Thank you — your inquiry is on its way. I'll reply within a day.");
         if (submit) submit.textContent = 'Sent';
-        // Meta Pixel: a delivered inquiry is the ad campaign's Lead event.
+        // A delivered inquiry is the ad campaigns' Lead event. The email is
+        // the one the visitor typed, so Google Ads enhanced conversions can
+        // use it — it never leaves these tag calls.
+        const leadEmail = String(data.get('email') || '').trim().toLowerCase();
+
         if (typeof fbq === 'function') fbq('track', 'Lead');
+        if (typeof ttq !== 'undefined' && ttq.track) ttq.track('SubmitForm');
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'generate_lead',
+          form: 'contact',
+          enhanced_conversion_data: { email: leadEmail },
+        });
         return;
       } catch (err) {
         say(`That didn't go through. Please text me at ${PHONE_DISPLAY} and I'll get right back to you.`, true);
