@@ -145,6 +145,18 @@
         if (typeof fbq === 'function') fbq('track', 'Lead');
         if (typeof ttq !== 'undefined' && ttq.track) ttq.track('SubmitForm');
 
+        // Google Ads: "Submit lead form" conversion. The email is set first so
+        // enhanced conversions can hash it (Google Ads hashes it client-side —
+        // the plain address is never transmitted).
+        if (typeof gtag === 'function') {
+          if (leadEmail) gtag('set', 'user_data', { email: leadEmail });
+          gtag('event', 'conversion', {
+            send_to: 'AW-18371166388/pGPCCLGcgdwcELSBh7hE',
+            value: 1.0,
+            currency: 'USD',
+          });
+        }
+
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: 'generate_lead',
